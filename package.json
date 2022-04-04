@@ -1,0 +1,24 @@
+{
+  "name": "action",
+  "version": "1.0.0",
+  "description": "bohr.io deploy action",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bohr-io/action.git"
+  },
+  "keywords": [
+    "bohr.io",
+    "deploy",
+    "action"
+  ],
+  "author": "bohr.io",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bohr-io/action/issues"
+  },
+  "homepage": "https://github.com/bohr-io/action#readme"
+}
