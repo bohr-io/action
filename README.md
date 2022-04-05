@@ -12,6 +12,8 @@ This action build and deploy your repository on [bohr.io](https://bohr.io) each 
 ```yaml
 name: bohr.io deploy
 on: push
+permissions:
+  id-token: write
 jobs:
   deploy:
     name: Deploy on bohr.io
