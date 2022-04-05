@@ -34,15 +34,6 @@ runs:
         npm install
       shell: bash
 
-    - name: Migrate Deploy
-      run: |
-        cd api/core
-        npx prisma generate
-        npx prisma migrate deploy
-      env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      shell: bash
-
     - name: Build
       run: npm run build
       shell: bash
@@ -53,7 +44,4 @@ runs:
       env:
         DEPLOY_PATH: "./"
         PUBLIC_PATH: "./dist"
-        UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
-        UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
-        BOHR_TOKEN: ${{ secrets.BOHR_TOKEN }}
       shell: bash

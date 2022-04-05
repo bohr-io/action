@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: bohr-io/action@v1
+      - uses: bohr-io/action@main
 ```
 <!-- end usage -->
 
