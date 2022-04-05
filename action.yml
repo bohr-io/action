@@ -6,6 +6,10 @@ runs:
     - name: Checkout Action 🛎
       uses: actions/checkout@v2
 
+    - name: Test
+      run: |
+        ls -la
+
     - name: Setup node env 🏗
       uses: actions/setup-node@v2
       with:
