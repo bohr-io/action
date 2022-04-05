@@ -11,6 +11,8 @@ runs:
 
     - name: Checkout Action
       uses: actions/checkout@v3
+      with:
+        token: ${{ github.token }}
 
     - name: Setup node env
       uses: actions/setup-node@v3
