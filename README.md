@@ -19,6 +19,7 @@ jobs:
     name: Deploy on bohr.io
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
       - uses: bohr-io/action@main
 ```
 <!-- end usage -->
