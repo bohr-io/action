@@ -11,15 +11,11 @@ This action build and deploy your repository on [bohr.io](https://bohr.io) each 
 <!-- start usage -->
 ```yaml
 name: bohr.io deploy
-
 on: push
-
 jobs:
   deploy:
     name: Deploy on bohr.io
-
     runs-on: ubuntu-latest
-
     steps:
       - uses: bohr-io/action@main
 ```
