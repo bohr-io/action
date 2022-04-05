@@ -1,11 +1,12 @@
 name: "bohr.io deploy"
-
 description: "Deploy your repository on bohr.io"
-
+inputs:
+  cli-version:
+    description: 'Optional CLI version tag'
+    default: 'latest'
+    required: false
 runs:
-
   using: "composite"
-
   steps:
 
     - name: Checkout Action
@@ -17,5 +18,5 @@ runs:
         node-version: "16"
 
     - name: Deploy on bohr.io
-      run: npx bohr deploy
+      run: npx bohr@${{ inputs.cli-version }} deploy
       shell: bash
