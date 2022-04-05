@@ -17,5 +17,7 @@ runs:
         node-version: "16"
 
     - name: Deploy on bohr.io
-      run: npx bohr deploy
+      run: |
+        npm i bohr@latest
+        npx bohr deploy
       shell: bash
