@@ -9,6 +9,7 @@ runs:
     - name: Test
       run: |
         ls -la
+      shell: bash
 
     - name: Setup node env 🏗
       uses: actions/setup-node@v2
