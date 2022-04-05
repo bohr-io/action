@@ -1,6 +1,9 @@
 name: "bohr.io deploy"
 description: "Deploy your repository on bohr.io"
 inputs:
+  token:
+    description: 'Github Token'
+    required: true
   cli-version:
     description: 'Optional CLI version tag'
     default: 'latest'
@@ -12,7 +15,7 @@ runs:
     - name: Checkout Action
       uses: actions/checkout@v3
       with:
-        token: ${{ github.token }}
+        token: ${{ inputs.token }}
 
     - name: Setup node env
       uses: actions/setup-node@v3
