@@ -1,52 +1,21 @@
 name: "bohr.io deploy"
+
 description: "Deploy your repository on bohr.io"
+
 runs:
+
   using: "composite"
+
   steps:
-    - name: Checkout Action 🛎
-      uses: actions/checkout@v2
 
-    - name: Test
-      run: |
-        ls -la
-      shell: bash
+    - name: Checkout Action
+      uses: actions/checkout@v3
 
-    - name: Setup node env 🏗
-      uses: actions/setup-node@v2
+    - name: Setup node env
+      uses: actions/setup-node@v3
       with:
         node-version: "16"
 
-    - name: Cache node modules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: |
-          ~/.npm
-          /home/runner/.cache
-          node_modules
-          */*/node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-          
-    - name: Install dependencies 👨🏻‍💻
-      run: |
-        npm install
-        cd api/core
-        npm install
-      shell: bash
-
-    - name: Build
-      run: npm run build
-      shell: bash
-
-    - name: Deploy
-      run: |
-        npx bohr deploy
-      env:
-        DEPLOY_PATH: "./"
-        PUBLIC_PATH: "./dist"
+    - name: Deploy on bohr.io
+      run: npx bohr deploy
       shell: bash
