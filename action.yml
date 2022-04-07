@@ -22,6 +22,7 @@ runs:
       
     - name: Get ID token from Github OIDC provider
       uses: actions/github-script@v6
+      id: get_id_token
       with:
         script: |
           const core = require('@actions/core');
@@ -30,7 +31,7 @@ runs:
     - name: Deploy on bohr.io
       run: npx bohr@latest deploy
       env:
-          ID_TOKEN: ${{ outputs.id_token }}
+          ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
       shell: bash
       if: ${{ inputs.cli-version == null }}
 
@@ -45,6 +46,6 @@ runs:
       run: |
         npx ${{ inputs.cli-version }} deploy
       env:
-          ID_TOKEN: ${{ outputs.id_token }}
+          ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
       shell: bash
       if: ${{ inputs.cli-version != null }}
