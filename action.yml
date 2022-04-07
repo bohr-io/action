@@ -47,6 +47,7 @@ runs:
       run: npx bohr@latest deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
+        GITHUB_TOKEN: ${{ github.token }}
       shell: bash
       if: ${{ inputs.cli-version == null }}
 
@@ -62,6 +63,7 @@ runs:
         npx ${{ inputs.cli-version }} deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
+        GITHUB_TOKEN: ${{ github.token }}
         CLI_VERSION: ${{ inputs.cli-version }}
       shell: bash
       if: ${{ inputs.cli-version != null }}
