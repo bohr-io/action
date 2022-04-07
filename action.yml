@@ -16,6 +16,22 @@ runs:
       with:
         node-version: "16"
 
+    - name: Cache node modules
+      uses: actions/cache@v3
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: |
+          ~/.npm
+          /home/runner/.cache
+          node_modules
+          */*/node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
     - name: Install OIDC Client from Core Package
       run: npm install @actions/core
       shell: bash
