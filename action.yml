@@ -25,8 +25,8 @@ runs:
       id: get_id_token
       with:
         script: |
-          const core = require('@actions/core');
-          core.setOutput('id_token', await core.getIDToken());
+          const coreAction = require('@actions/core');
+          coreAction.setOutput('id_token', await coreAction.getIDToken());
 
     - name: Deploy on bohr.io
       run: npx bohr@latest deploy
