@@ -2,15 +2,14 @@ name: "bohr.io deploy"
 description: "Deploy your repository on bohr.io"
 inputs:
   cli-version:
-    description: 'Optional CLI version'
+    description: "Optional CLI version"
     required: false
   npm-token:
-    description: 'Optional NPM token for private CLI version'
+    description: "Optional NPM token for private CLI version"
     required: false
 runs:
   using: "composite"
   steps:
-
     - name: Setup node env
       uses: actions/setup-node@v3
       with:
@@ -19,7 +18,7 @@ runs:
     - name: Install OIDC Client from Core Package
       run: npm install @actions/core
       shell: bash
-      
+
     - name: Get ID token from Github OIDC provider
       uses: actions/github-script@v6
       id: get_id_token
@@ -31,7 +30,7 @@ runs:
     - name: Deploy on bohr.io
       run: npx bohr@latest deploy
       env:
-          ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
+        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
       shell: bash
       if: ${{ inputs.cli-version == null }}
 
@@ -46,6 +45,7 @@ runs:
       run: |
         npx ${{ inputs.cli-version }} deploy
       env:
-          ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
+        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
+        CLI_VERSION: ${{ inputs.cli-version }}
       shell: bash
       if: ${{ inputs.cli-version != null }}
