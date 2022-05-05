@@ -64,6 +64,5 @@ runs:
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
-        CLI_VERSION: ${{ inputs.cli-version }}
       shell: bash
       if: ${{ inputs.cli-version != null }}
