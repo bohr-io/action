@@ -4,7 +4,7 @@ This action build and deploy your repository on [bohr.io](https://bohr.io) each 
 
 # What's new
 
-- Updated to the node16 runtime by default
+- Updated to the node16 runtime by default.
 
 # Usage
 
@@ -25,4 +25,4 @@ jobs:
 
 # License
 
-The scripts and documentation in this project are released under the [MIT License](LICENSE)
+The scripts and documentation in this project are released under the [MIT License](LICENSE).
