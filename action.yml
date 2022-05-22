@@ -48,6 +48,7 @@ runs:
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
+        FORCE_COLOR: "2"
       shell: bash
       if: ${{ inputs.cli-version == null }}
 
@@ -64,5 +65,6 @@ runs:
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
+        FORCE_COLOR: "2"
       shell: bash
       if: ${{ inputs.cli-version != null }}
