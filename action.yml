@@ -32,7 +32,7 @@ runs:
           ${{ runner.os }}-
 
     - name: Install OIDC Client from Core Package
-      run: npm install @actions/core
+      run: npm --logevel=error install @actions/core
       shell: bash
 
     - name: Get ID token from Github OIDC provider
@@ -44,7 +44,7 @@ runs:
           coreAction.setOutput('id_token', await coreAction.getIDToken());
 
     - name: Deploy on bohr.io
-      run: npx bohr@latest deploy
+      run: npx --yes bohr@latest deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
@@ -61,7 +61,7 @@ runs:
 
     - name: Deploy on bohr.io [${{ inputs.cli-version }}]
       run: |
-        npx ${{ inputs.cli-version }} deploy
+        npx --yes ${{ inputs.cli-version }} deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
