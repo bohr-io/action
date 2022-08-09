@@ -21,19 +21,22 @@ runs:
         cache-name: cache-node-modules
       with:
         path: |
-          ~/.npm
-          /home/runner/.cache
-          node_modules
-          */*/node_modules
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          turborepo-cache
+          node_modules/@prisma/client
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/yarn.json') }}
         restore-keys: |
           ${{ runner.os }}-build-${{ env.cache-name }}-
           ${{ runner.os }}-build-
           ${{ runner.os }}-
 
     - name: Install OIDC Client from Core Package
-      run: npm --logevel=error install @actions/core
+      run: yarn add @actions/core -W
       shell: bash
+
+    # - name: yarn install
+    #   shell: bash
+    #   run: |
+    #     yarn install
 
     - name: Get ID token from Github OIDC provider
       uses: actions/github-script@v6
