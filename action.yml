@@ -28,7 +28,7 @@ runs:
           coreAction.setOutput('id_token', await coreAction.getIDToken());
 
     - name: Deploy on bohr.io
-      run: npx --yes bohr@latest deploy
+      run: /usr/bin/bohr deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
@@ -44,8 +44,7 @@ runs:
       if: ${{ inputs.npm-token != null }}
 
     - name: Deploy on bohr.io [${{ inputs.cli-version }}]
-      run: |
-        npx --yes ${{ inputs.cli-version }} deploy
+      run: /usr/bin/bohr deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
