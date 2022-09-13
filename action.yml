@@ -1,11 +1,8 @@
 name: "bohr.io deploy"
 description: "Deploy your repository on bohr.io"
 inputs:
-  cli-version:
-    description: "Optional CLI version"
-    required: false
-  npm-token:
-    description: "Optional NPM token for private CLI version"
+  cli-no-install:
+    description: "Flag to not install cli from package."
     required: false
 runs:
   using: "composite"
@@ -17,6 +14,12 @@ runs:
 
     - name: Install OIDC Client from Core Package
       run: yarn add @actions/core -W
+      shell: bash
+
+    - name: Install bohr deb package
+      run: |
+        bash install.sh
+      if: ${{ inputs.cli-no-install != 'true' }}
       shell: bash
 
     - name: Get ID token from Github OIDC provider
@@ -34,20 +37,3 @@ runs:
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
       shell: bash
-      if: ${{ inputs.cli-version == null }}
-
-    - name: Set NPM token
-      run: |
-        npm config set @bohr.io:registry https://registry.npmjs.org
-        npm config set //registry.npmjs.org/:_authToken ${{ inputs.npm-token }}
-      shell: bash
-      if: ${{ inputs.npm-token != null }}
-
-    - name: Deploy on bohr.io [${{ inputs.cli-version }}]
-      run: /usr/bin/bohr deploy
-      env:
-        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
-        GITHUB_TOKEN: ${{ github.token }}
-        FORCE_COLOR: "2"
-      shell: bash
-      if: ${{ inputs.cli-version != null }}
