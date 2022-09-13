@@ -38,9 +38,5 @@ runs:
           coreAction.setOutput('id_token', await coreAction.getIDToken());
 
     - name: Deploy on bohr.io
-      run: sudo /usr/bin/bohr deploy
-      env:
-        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
-        GITHUB_TOKEN: ${{ github.token }}
-        FORCE_COLOR: "2"
+      run: "ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }} GITHUB_TOKEN: ${{ github.token }} FORCE_COLOR: \"2\" sudo /usr/bin/bohr deploy"
       shell: bash
