@@ -1,8 +1,10 @@
 name: "bohr.io deploy"
 description: "Deploy your repository on bohr.io"
 inputs:
-  cli-no-install:
-    description: "Flag to not install cli from package."
+  cli-binary:
+    description: "Flag to use cli in binary mode."
+  cli-install:
+    description: "Flag to install cli from debian package."
     required: false
 runs:
   using: "composite"
@@ -27,7 +29,7 @@ runs:
         wget -nv $BOHR_CLI_DEB_URL
         sudo dpkg --force-all -i $BOHR_CLI_DEB
         sudo rm $BOHR_CLI_DEB
-      if: ${{ inputs.cli-no-install != 'true' }}
+      if: ${{ inputs.cli-install == 'true' }}
       shell: bash
 
     - name: Get ID token from Github OIDC provider
@@ -38,10 +40,20 @@ runs:
           const coreAction = require('@actions/core');
           coreAction.setOutput('id_token', await coreAction.getIDToken());
 
-    - name: Deploy on bohr.io
+    - name: Deploy on bohr.io using binary
       run: sudo -E /usr/bin/bohr deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
+      if: ${{ inputs.cli-binary == 'true' }}
+      shell: bash
+
+    - name: Deploy on bohr.io using NPM
+      run: npx --yes bohr@latest deploy
+      env:
+        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
+        GITHUB_TOKEN: ${{ github.token }}
+        FORCE_COLOR: "2"
+      if: ${{ inputs.cli-binary == 'false' }}
       shell: bash
