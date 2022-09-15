@@ -1,7 +1,7 @@
 name: "bohr.io deploy"
 description: "Deploy your repository on bohr.io"
 inputs:
-  cli-binary:
+  cli-use-binary:
     description: "Flag to use cli in binary mode."
   cli-install:
     description: "Flag to install cli from debian package."
@@ -46,7 +46,7 @@ runs:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
-      if: ${{ inputs.cli-binary == 'true' }}
+      if: ${{ inputs.cli-use-binary == 'true' }}
       shell: bash
 
     - name: Deploy on bohr.io using NPM
@@ -55,5 +55,5 @@ runs:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
-      if: ${{ inputs.cli-binary == 'false' }}
+      if: ${{ inputs.cli-use-binary == 'false' }}
       shell: bash
