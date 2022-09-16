@@ -57,3 +57,12 @@ runs:
         FORCE_COLOR: "2"
       if: ${{ inputs.cli-use-binary == 'false' }}
       shell: bash
+    
+    - name: Deploy on bohr.io using NPM
+      run: npx --yes bohr@latest deploy
+      env:
+        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
+        GITHUB_TOKEN: ${{ github.token }}
+        FORCE_COLOR: "2"
+      if: ${{ inputs.cli-use-binary == '' }}
+      shell: bash
