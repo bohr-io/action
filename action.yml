@@ -1,10 +1,8 @@
 name: "bohr.io deploy"
 description: "Deploy your repository on bohr.io"
 inputs:
-  cli-use-binary:
-    description: "Flag to use cli in binary mode."
-  cli-install:
-    description: "Flag to install cli from debian package."
+  cli-version:
+    description: "Optional CLI version"
     required: false
 runs:
   using: "composite"
@@ -15,21 +13,8 @@ runs:
         node-version: "16"
 
     - name: Install OIDC Client from Core Package
-      run: yarn add @actions/core -W
-      shell: bash
-
-    - name: Install bohr deb package
       run: |
-        VERSION=$(curl -s "https://bohr-cli-packages.bohr.workers.dev/channels/main/bohr-linux-x64-buildmanifest" | jq -r '.version')
-        HASH=$(curl -s "https://bohr-cli-packages.bohr.workers.dev/channels/main/bohr-linux-x64-buildmanifest" | jq -r '.sha')
-        VERSION_ARR=(${VERSION//-/ })
-        VERSION_NUMBER=${VERSION_ARR[0]}
-        BOHR_CLI_DEB="bohr_$VERSION_NUMBER.$HASH-1_amd64.deb"
-        BOHR_CLI_DEB_URL="https://bohr-cli-packages.bohr.workers.dev/versions/$VERSION/$HASH/apt/$BOHR_CLI_DEB"
-        wget -nv $BOHR_CLI_DEB_URL
-        sudo dpkg --force-all -i $BOHR_CLI_DEB
-        sudo rm $BOHR_CLI_DEB
-      if: ${{ inputs.cli-install == 'true' }}
+        yarn add @actions/core -W
       shell: bash
 
     - name: Get ID token from Github OIDC provider
@@ -40,29 +25,23 @@ runs:
           const coreAction = require('@actions/core');
           coreAction.setOutput('id_token', await coreAction.getIDToken());
 
-    - name: Deploy on bohr.io using binary
-      run: sudo -E /usr/bin/bohr deploy
+    - name: Deploy on bohr.io using NPM
+      run: npx --yes bohr@latest deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
-      if: ${{ inputs.cli-use-binary == 'true' }}
+      if: ${{ inputs.cli-version == null }}
       shell: bash
 
-    - name: Deploy on bohr.io using NPM
-      run: npx --yes bohr@latest deploy
+    - name: Deploy on bohr.io [${{ inputs.cli-version }}]
+      run: |
+        yarn global add ${{ inputs.cli-version }} --prefix /usr/local
+        npx --yes prisma generate --schema=api/core/src/service/prisma/schema.prisma
+        /usr/local/bin/bohr deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
-      if: ${{ inputs.cli-use-binary == 'false' }}
       shell: bash
-    
-    - name: Deploy on bohr.io using NPM
-      run: npx --yes bohr@latest deploy
-      env:
-        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
-        GITHUB_TOKEN: ${{ github.token }}
-        FORCE_COLOR: "2"
-      if: ${{ inputs.cli-use-binary == '' }}
-      shell: bash
+      if: ${{ inputs.cli-version != null }}
