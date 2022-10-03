@@ -37,7 +37,6 @@ runs:
     - name: Deploy on bohr.io [${{ inputs.cli-version }}]
       run: |
         yarn global add ${{ inputs.cli-version }} --prefix /usr/local
-        npx --yes prisma generate --schema=api/core/src/service/prisma/schema.prisma
         /usr/local/bin/bohr deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
