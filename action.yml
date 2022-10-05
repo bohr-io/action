@@ -26,7 +26,9 @@ runs:
           coreAction.setOutput('id_token', await coreAction.getIDToken());
 
     - name: Deploy on bohr.io using NPM
-      run: npx --yes bohr@latest deploy
+      run: |
+        yarn global add bohr@latest --prefix /usr/local
+        /usr/local/bin/bohr deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
