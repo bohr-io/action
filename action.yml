@@ -27,7 +27,8 @@ runs:
 
     - name: Deploy on bohr.io using NPM
       run: |
-        npx --y bohr@latest deploy
+        yarn add bohr@latest -W
+        node_modules/bohr/bin/run deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
@@ -37,7 +38,8 @@ runs:
 
     - name: Deploy on bohr.io [${{ inputs.cli-version }}]
       run: |
-        npx --y ${{ inputs.cli-version }} deploy
+        yarn add ${{ inputs.cli-version }} -W
+        node_modules/@bohr.io/bohr-dev/bin/run deploy
       env:
         ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
