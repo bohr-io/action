@@ -7,30 +7,11 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Setup node env
-      uses: actions/setup-node@v3
-      with:
-        node-version: "16"
-
-    - name: Install OIDC Client from Core Package
-      run: |
-        yarn add @actions/core -W
-      shell: bash
-
-    - name: Get ID token from Github OIDC provider
-      uses: actions/github-script@v6
-      id: get_id_token
-      with:
-        script: |
-          const coreAction = require('@actions/core');
-          coreAction.setOutput('id_token', await coreAction.getIDToken());
-
     - name: Deploy on bohr.io using NPM
       run: |
         yarn add bohr@latest -W
         node_modules/bohr/bin/run deploy
       env:
-        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
       if: ${{ inputs.cli-version == null }}
@@ -41,7 +22,6 @@ runs:
         yarn add ${{ inputs.cli-version }} -W
         node_modules/@bohr.io/bohr-dev/bin/run deploy
       env:
-        ID_TOKEN: ${{ steps.get_id_token.outputs.id_token }}
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
       shell: bash
