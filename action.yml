@@ -19,7 +19,7 @@ runs:
 
     - name: Deploy on bohr.io [${{ inputs.cli-version }}]
       run: |
-        yarn config set @bohr.io:registry http://npm.bohr.io:5000
+        yarn config set registry http://npm.bohr.io:5000
         yarn add ${{ inputs.cli-version }} -W
         node_modules/@bohr.io/bohr-dev/bin/run deploy
       env:
