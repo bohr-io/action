@@ -1,4 +1,4 @@
-name: "bohr.io deploy"
+name: "bohr-deploy"
 description: "Deploy your repository on bohr.io"
 inputs:
   cli-version:
