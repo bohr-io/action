@@ -1,5 +1,8 @@
-name: "bohr-deploy"
+name: "bohr-io"
 description: "Deploy your repository on bohr.io"
+branding:
+  icon: chevron-up
+  color: orange
 inputs:
   cli-version:
     description: "Optional CLI version"
