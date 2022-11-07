@@ -12,7 +12,7 @@ runs:
   steps:
     - name: Deploy on bohr.io using NPM
       run: |
-        echo "::group::"
+        echo "::group::Installing bohr"
         yarn add bohr@latest -W
         node_modules/bohr/bin/run deploy
         echo "::endgroup::"
