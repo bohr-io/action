@@ -13,6 +13,8 @@ This action build and deploy your repository on [bohr.io](https://bohr.io) each 
 name: bohr.io deploy
 on: 
   push:
+    branches:    
+      - '**'
   repository_dispatch:
     types: [bohr-dispatch]
 permissions: write-all
