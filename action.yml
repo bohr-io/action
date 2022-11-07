@@ -24,8 +24,10 @@ runs:
 
     - name: Deploy on bohr.io [${{ inputs.cli-version }}]
       run: |
+        echo "::group::Installing bohr"
         yarn add ${{ inputs.cli-version }} -W
         node_modules/@bohr.io/bohr-dev/bin/run deploy
+        echo "::endgroup::"
       env:
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
