@@ -16,6 +16,7 @@ runs:
         yarn add bohr@latest -W
         echo "::endgroup::"
         node_modules/bohr/bin/run deploy
+        echo "::endgroup::"
       env:
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
@@ -28,6 +29,7 @@ runs:
         yarn add ${{ inputs.cli-version }} -W
         echo "::endgroup::"
         node_modules/@bohr.io/bohr-dev/bin/run deploy
+        echo "::endgroup::"
       env:
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
