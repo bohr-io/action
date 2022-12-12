@@ -12,7 +12,7 @@ runs:
   steps:
     - name: Deploy on bohr.io using NPM
       run: |
-        npx bohr@latest deploy
+        npx --yes bohr@latest deploy
       env:
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
@@ -21,7 +21,7 @@ runs:
 
     - name: Deploy on bohr.io [${{ inputs.cli-version }}]
       run: |
-        npx ${{ inputs.cli-version }} deploy
+        npx --yes ${{ inputs.cli-version }} deploy
       env:
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
