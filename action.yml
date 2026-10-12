@@ -10,13 +10,55 @@ inputs:
 runs:
   using: "composite"
   steps:
+    # Projects already on the new bohr.io (v2) get their build plan from it, authenticated with this job's
+    # GitHub OIDC token (bohr.yml grants write-all, which includes id-token). Anything else, or any failure to
+    # reach it, keeps the v1 deploy below exactly as before.
+    - name: bohr.io v2 build plan
+      id: plan
+      uses: bohr-io/deploy-action@v1
+      with:
+        build-plan: "true"
+        phase: prepare
+      continue-on-error: true
+
+    - name: Node for the build
+      if: ${{ steps.plan.outputs.found == 'true' }}
+      uses: actions/setup-node@v5
+      with:
+        node-version: ${{ steps.plan.outputs.node-version }}
+
+    - name: Install
+      if: ${{ steps.plan.outputs.found == 'true' && steps.plan.outputs.install != '' }}
+      run: bash -c "$BOHR_INSTALL"
+      env:
+        BOHR_INSTALL: ${{ steps.plan.outputs.install }}
+      shell: bash
+
+    - name: Build
+      if: ${{ steps.plan.outputs.found == 'true' && steps.plan.outputs.build != '' }}
+      run: bash -c "$BOHR_BUILD"
+      env:
+        BOHR_BUILD: ${{ steps.plan.outputs.build }}
+      shell: bash
+
+    # wrangler, which bundles the deploy, needs Node 22 or newer whatever the build used
+    - name: Node for the deploy
+      if: ${{ steps.plan.outputs.found == 'true' }}
+      uses: actions/setup-node@v5
+      with:
+        node-version: "22"
+
+    - name: Deploy on bohr.io
+      if: ${{ steps.plan.outputs.found == 'true' }}
+      uses: bohr-io/deploy-action@v1
+
     - name: Deploy on bohr.io using NPM
       run: |
         npx --yes bohr@latest deploy
       env:
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
-      if: ${{ inputs.cli-version == null }}
+      if: ${{ steps.plan.outputs.found != 'true' && inputs.cli-version == null }}
       shell: bash
 
     - name: Deploy on bohr.io [${{ inputs.cli-version }}]
@@ -26,4 +68,4 @@ runs:
         GITHUB_TOKEN: ${{ github.token }}
         FORCE_COLOR: "2"
       shell: bash
-      if: ${{ inputs.cli-version != null }}
+      if: ${{ steps.plan.outputs.found != 'true' && inputs.cli-version != null }}
